@@ -3,6 +3,7 @@ import {
   getFolderSize,
   getSubItemCount,
   numberWithCommas,
+  parseArgs,
 } from "./utils";
 import { promises as fs } from "fs";
 import { homedir } from "os";
@@ -42,7 +43,12 @@ async function buildDirectoryMap(path = "./") {
 
 (async () => {
   const start = new Date().getTime();
-  await buildDirectoryMap(join(homedir()));
+  const args = parseArgs(["--output", "--dir"]);
+  let scanDir = homedir();
+  if (args.hasOwnProperty("--dir")) {
+    scanDir = args["--dir"];
+  }
+  await buildDirectoryMap(scanDir);
   console.log(`Found ${Object.keys(directories).length} directories`);
   const elapsed = new Date().getTime() - start;
   console.log(`This took ${elapsed}ms`);

@@ -73,6 +73,20 @@ export function timeConversion(duration: number) {
   return portions.join(" ");
 }
 
-export async function parseArgs() {
-  
+type Args = {
+  [key: string]: string;
+};
+
+export function parseArgs(acceptArgs: string[]): Args {
+  const processArgs = process.argv;
+  let returnValue = {};
+  for (let i = 0; i < processArgs.length; i++) {
+    let arg = processArgs[i];
+    acceptArgs.forEach((acceptableArg) => {
+      if (arg === acceptableArg) {
+        returnValue[acceptableArg] = processArgs[i + 1];
+      }
+    });
+  }
+  return returnValue;
 }
