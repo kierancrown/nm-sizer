@@ -37,13 +37,13 @@ There are two command line arguments you can pass in
 
 ### Examples
 
-Scan for all node_modules in your Downloads directory and output results to your Desktop
+Scan for all node_modules in your downloads directory and output results to your desktop
 
 ```(bash)
 npx nm-sizer --dir ~/Downloads --output
 ```
 
-Scan for all node_modules in your Home Directory directory and output results to your Documents
+Scan for all node_modules in your home directory and output results to your documents
 
 ```(bash)
 npx nm-sizer --output ~/Documents
