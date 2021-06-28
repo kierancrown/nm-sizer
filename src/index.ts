@@ -1,5 +1,6 @@
 import {
   bytesToSize,
+  dateTimeString,
   getFolderSize,
   getSubItemCount,
   numberWithCommas,
@@ -11,7 +12,6 @@ import { join } from "path";
 
 // Arguments
 let scanDir = homedir();
-let outputFile = null;
 
 // Outputs
 let directories = {};
@@ -46,24 +46,37 @@ async function buildDirectoryMap(path = "./") {
   } catch (error) {}
 }
 
-async function generateOutput(path = join(homedir(), "Desktop")) {
-  return null;
+async function generateOutput(path: string) {
+  const fileName = join(path, `output--${dateTimeString()}.json`);
+  const output = JSON.stringify(
+    {
+      overview: {
+        totalFolders: Object.keys(directories).length,
+        totalModules: numberWithCommas(totalModules),
+        totalFileSize: bytesToSize(totalBytes),
+      },
+      directories,
+    },
+    null,
+    2
+  );
+  await fs.writeFile(fileName, output, "utf8");
+  console.log(`File saved to ${fileName}`);
 }
 
 (async () => {
   const start = new Date().getTime();
-
   // Parse args
   const args = parseArgs(["--output", "--dir"]);
-  if (args.hasOwnProperty("--dir")) {
-    scanDir = args["--dir"];
-  }
-  if (args.hasOwnProperty("--output")) {
-    outputFile = args["--output"];
-  }
-
+  if (args.hasOwnProperty("--dir")) scanDir = args["--dir"];
   await buildDirectoryMap(scanDir);
   console.log(`Found ${Object.keys(directories).length} directories`);
   const elapsed = new Date().getTime() - start;
-  console.log(`This took ${elapsed}ms`);
+  console.log(`Whew! That took ${elapsed}ms`);
+  if (args.hasOwnProperty("--output")) {
+    const outputPath = args["--output"];
+    await generateOutput(
+      typeof outputPath === "string" ? outputPath : join(homedir(), "Desktop")
+    );
+  }
 })();
