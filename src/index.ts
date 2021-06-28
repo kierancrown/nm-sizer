@@ -84,7 +84,8 @@ async function generateOutput(path: string) {
   const start = new Date().getTime();
   // Parse args
   const args = parseArgs(["--output", "--dir"]);
-  if (args.hasOwnProperty("--dir")) scanDir = args["--dir"];
+  if (args.hasOwnProperty("--dir"))
+    scanDir = args["--dir"] ? args["--dir"] : homedir();
   await buildDirectoryMap(scanDir);
   console.log(`Found ${Object.keys(directories).length} directories`);
   const elapsed = new Date().getTime() - start;
