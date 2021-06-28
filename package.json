@@ -1,0 +1,11 @@
+{
+    "name": "nm-sizer",
+    "description": "Calculates total size of all node_modules in your home directory",
+    "authors": "Kieran Crown <kieran.crown@gmail.com>",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "@types/node": "^15.12.5"
+    }
+}
