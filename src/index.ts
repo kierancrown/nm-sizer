@@ -9,6 +9,11 @@ import { promises as fs } from "fs";
 import { homedir } from "os";
 import { join } from "path";
 
+// Arguments
+let scanDir = homedir();
+let outputFile = null;
+
+// Outputs
 let directories = {};
 let totalBytes = 0;
 let totalModules = 0;
@@ -41,13 +46,22 @@ async function buildDirectoryMap(path = "./") {
   } catch (error) {}
 }
 
+async function generateOutput(path = join(homedir(), "Desktop")) {
+  return null;
+}
+
 (async () => {
   const start = new Date().getTime();
+
+  // Parse args
   const args = parseArgs(["--output", "--dir"]);
-  let scanDir = homedir();
   if (args.hasOwnProperty("--dir")) {
     scanDir = args["--dir"];
   }
+  if (args.hasOwnProperty("--output")) {
+    outputFile = args["--output"];
+  }
+
   await buildDirectoryMap(scanDir);
   console.log(`Found ${Object.keys(directories).length} directories`);
   const elapsed = new Date().getTime() - start;
