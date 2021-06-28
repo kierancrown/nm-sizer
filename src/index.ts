@@ -10,11 +10,18 @@ import { promises as fs } from "fs";
 import { homedir } from "os";
 import { join } from "path";
 
+type Directory = {
+  [key: string]: {
+    size: number;
+    moduleCount: number;
+  };
+};
+
 // Arguments
 let scanDir = homedir();
 
 // Outputs
-let directories = {};
+let directories: Directory = {};
 let totalBytes = 0;
 let totalModules = 0;
 
@@ -51,11 +58,19 @@ async function generateOutput(path: string) {
   const output = JSON.stringify(
     {
       overview: {
-        totalFolders: Object.keys(directories).length,
-        totalModules: numberWithCommas(totalModules),
-        totalFileSize: bytesToSize(totalBytes),
+        "node_modules directories": numberWithCommas(
+          Object.keys(directories).length
+        ),
+        "total modules": numberWithCommas(totalModules),
+        "total file size": bytesToSize(totalBytes),
       },
-      directories,
+      results: Object.values(directories).map((res, i) => {
+        return {
+          path: Object.keys(directories)[i],
+          "file size": bytesToSize(res.size),
+          "module count": numberWithCommas(res.moduleCount),
+        };
+      }),
     },
     null,
     2
