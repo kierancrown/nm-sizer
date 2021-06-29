@@ -84,7 +84,13 @@ export function parseArgs(acceptArgs: string[]): Args {
     let arg = processArgs[i];
     acceptArgs.forEach((acceptableArg) => {
       if (arg === acceptableArg) {
-        returnValue[acceptableArg] = processArgs[i + 1];
+        const argValue =
+          acceptArgs.indexOf(processArgs[i + 1]) === -1
+            ? processArgs[i + 1] !== undefined
+              ? processArgs[i + 1]
+              : null
+            : null;
+        returnValue[acceptableArg] = argValue;
       }
     });
   }

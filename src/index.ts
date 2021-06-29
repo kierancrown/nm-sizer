@@ -91,9 +91,9 @@ async function generateOutput(path: string) {
   const elapsed = new Date().getTime() - start;
   console.log(`Whew! That took ${elapsed}ms`);
   if (args.hasOwnProperty("--output")) {
-    const outputPath = args["--output"];
-    await generateOutput(
-      typeof outputPath === "string" ? outputPath : join(homedir(), "Desktop")
-    );
+    const outputPath = args["--output"]
+      ? args["--output"]
+      : join(homedir(), "Desktop");
+    await generateOutput(outputPath);
   }
 })();
